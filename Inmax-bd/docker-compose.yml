@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+    networks:
+      - inmaxnet
+
+  fastapi:
+    build: ../Inmax-api
+    container_name: fastapi
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+    volumes:
+      - ../Inmax-api:/app  # 🔥 Monta tu código local directo al contenedor
+    networks:
+      - inmaxnet
+
+networks:
+  inmaxnet:
+    driver: bridge
